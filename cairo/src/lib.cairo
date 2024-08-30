@@ -21,19 +21,24 @@
 // }
 
 fn main(input: Array<felt252>) -> Array<felt252> {
-    // core::internal::require_implicit::<System>();
+    core::internal::require_implicit::<System>();
+    core::internal::revoke_ap_tracking();
     let a = 297;
     core::option::OptionTraitImpl::expect(core::gas::withdraw_gas(), 'Out of gas');
+    // core::option::OptionTraitImpl::expect(core::gas::withdraw_gas_all(B), 'Out of gas');
     let b = a * a;
     let mut i = 0_u32;
     let mut r = 0;
-    while i < 11 {
+    loop {
         i += 1;
         core::gas::withdraw_gas().unwrap();
-        // r += fun(i.into());
+        r += fun(10);
+        if i == 2 {
+            break;
+        }
     };
-    fun(2);
-    core::option::OptionTraitImpl::expect(Option::Some(()), 'Out of gas');
+    r += fun(0);
+    // core::option::OptionTraitImpl::expect(Option::Some(()), 'Out of gas');
     array![a, b, r]
 }
 
